@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "ingest": "tsx src/scripts/ingest.ts",
-    "dev": "mastra dev"
+    "dev": "mastra dev",
+    "start": "tsx src/server.ts",
+    "eval": "tsx eval/runEval.ts"
   },
   "keywords": [],
   "author": "Rahul",
@@ -16,10 +18,12 @@
     "@mastra/core": "^1.41.0",
     "ai": "^6.0.197",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "pg": "^8.21.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.9.1",
     "@types/pg": "^8.20.0",
     "mastra": "^1.12.2",
