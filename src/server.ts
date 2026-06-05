@@ -1,0 +1,77 @@
+import express from "express";
+import dotenv from "dotenv";
+import fs from "fs";
+import crypto from "crypto";
+
+import { taraAgent } from "./mastra/agents/taraAgent.js";
+
+function log(message: object) {
+	fs.appendFileSync(
+		"app.log",
+		JSON.stringify(message) + "\n"
+	);
+}
+
+dotenv.config();
+
+const app = express();
+
+app.use(express.json());
+
+app.post("/ask", async (req, res) => {
+
+    const requestId = crypto.randomUUID();
+    const start = Date.now();
+    const question = req.body.question;
+
+    try {
+
+        if (!question) {
+            return res.status(400).json({
+                answer: "question is required",
+            });
+        }
+
+        log({
+            requestId,
+            question,
+            status: "started"
+        });
+
+        const response = await taraAgent.generate(question);
+
+        log({
+            requestId,
+            question,
+            status: "success",
+            latencyMs: Date.now() - start
+        });
+
+        res.json({
+            answer: response.text,
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        log({
+            requestId,
+            question,
+            status: "failure",
+            error: String(error),
+            latencyMs: Date.now() - start
+        });
+
+        res.status(500).json({
+            answer:
+                "Unable to process request. Model provider quota exceeded or unavailable."
+        });
+    }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+	console.log(`Server running on port ${PORT}`);
+});
