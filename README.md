@@ -183,7 +183,37 @@ npm run dev
 Open the Mastra Studio URL displayed in the terminal.
 
 ---
+## API
 
+### POST /ask
+
+Request:
+
+```json
+{
+  "question": "What is my portfolio value?"
+}
+```
+
+Response:
+
+```json
+{
+  "answer": "..."
+}
+```
+---
+## Evaluation
+
+Run the evaluation script:
+
+```bash
+npm run eval
+```
+
+The evaluation script sends a set of representative finance questions to the `/ask` endpoint and prints the returned answers.
+
+---
 ## Example Questions
 
 Transactions:
@@ -204,6 +234,20 @@ Portfolio:
 * Show my portfolio allocation.
 * How much profit have I made?
 * What is my portfolio return?
+
+---
+
+## Observability
+
+The application records request lifecycle events in `app.log`.
+
+Logged information includes:
+
+- Request ID
+- Question
+- Request status
+- Latency
+- Error details (if applicable)
 
 ---
 

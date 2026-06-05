@@ -29,6 +29,32 @@ Final Response
 The agent never directly accesses database tables. All data retrieval occurs through controlled tool interfaces.
 
 ---
+## API Layer
+
+The application exposes a REST endpoint:
+
+POST /ask
+
+Workflow:
+
+User Question
+      ↓
+POST /ask
+      ↓
+Tara Agent
+      ↓
+Tool Execution
+      ↓
+PostgreSQL
+      ↓
+Answer Response
+
+The endpoint returns answers in JSON format:
+
+{
+  "answer": "..."
+}
+---
 
 ## Database Design
 
@@ -261,6 +287,21 @@ Advantages:
 * Indexes improve query performance.
 * Tool outputs are used as the sole source of financial data.
 * The ingestion process assumes a clean database before loading a snapshot.
+
+---
+## Observability
+
+Basic observability is implemented through structured request logging.
+
+For every request the system records:
+
+- Request ID
+- Question
+- Execution status
+- Latency
+- Error information
+
+These logs assist with debugging and provide evidence of successful and failed executions.
 
 ---
 
