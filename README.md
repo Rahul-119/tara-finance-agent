@@ -341,3 +341,53 @@ DATABASE_URL=<postgres_connection_string>
 GOOGLE_API_KEY=<gemini_api_key>
 ```
 
+## API Usage
+
+### Base URL
+
+```text
+https://tara-finance-agent-aetw.onrender.com
+```
+
+### Endpoint
+
+```http
+POST /ask
+```
+
+### Request
+
+```json
+{
+  "question": "What is my portfolio value?"
+}
+```
+
+### Example using curl
+
+```bash
+curl -X POST https://tara-finance-agent-aetw.onrender.com/ask \
+-H "Content-Type: application/json" \
+-d '{"question":"What is my portfolio value?"}'
+```
+
+### Example Response
+
+```json
+{
+  "answer": "Your total portfolio value is $119,983.80."
+}
+```
+
+### Sample Questions
+
+```text
+What is my largest expense?
+How much did I spend on amazon?
+Show my top 5 merchants.
+What is my portfolio value?
+Show my portfolio allocation.
+How has fund_bluechip performed?
+Which fund performed the best?
+```
+
