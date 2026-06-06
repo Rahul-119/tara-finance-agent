@@ -73,29 +73,9 @@ app.post("/ask", async (req, res) => {
 	}
 });
 
-app.get("/health", async (req, res) => {
-    res.json({
-        databaseUrlExists: !!process.env.DATABASE_URL,
-        googleKeyExists: !!process.env.GOOGLE_API_KEY,
-    });
-});
-
 import pool from "./db/connection.js";
 
-app.get("/db-health", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT NOW()");
-        res.json({
-            connected: true,
-            time: result.rows[0]
-        });
-    } catch (error) {
-        res.status(500).json({
-            connected: false,
-            error: String(error)
-        });
-    }
-});
+
 
 const PORT = process.env.PORT || 3000;
 
