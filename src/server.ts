@@ -18,56 +18,60 @@ const app = express();
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+	res.json({
+		message: "Tara Finance Assistant API",
+		endpoint: "POST /ask"
+	});
+});
+
 app.post("/ask", async (req, res) => {
+	const requestId = crypto.randomUUID();
+	const start = Date.now();
+	const question = req.body.question;
 
-    const requestId = crypto.randomUUID();
-    const start = Date.now();
-    const question = req.body.question;
+	try {
+		if (!question) {
+			return res.status(400).json({
+				answer: "question is required",
+			});
+		}
 
-    try {
+		log({
+			requestId,
+			question,
+			status: "started"
+		});
 
-        if (!question) {
-            return res.status(400).json({
-                answer: "question is required",
-            });
-        }
+		const response = await taraAgent.generate(question);
 
-        log({
-            requestId,
-            question,
-            status: "started"
-        });
+		log({
+			requestId,
+			question,
+			status: "success",
+			latencyMs: Date.now() - start
+		});
 
-        const response = await taraAgent.generate(question);
+		res.json({
+			answer: response.text,
+		});
 
-        log({
-            requestId,
-            question,
-            status: "success",
-            latencyMs: Date.now() - start
-        });
+	} catch (error) {
+		console.error(error);
 
-        res.json({
-            answer: response.text,
-        });
+		log({
+			requestId,
+			question,
+			status: "failure",
+			error: String(error),
+			latencyMs: Date.now() - start
+		});
 
-    } catch (error) {
-
-        console.error(error);
-
-        log({
-            requestId,
-            question,
-            status: "failure",
-            error: String(error),
-            latencyMs: Date.now() - start
-        });
-
-        res.status(500).json({
-            answer:
-                "Unable to process request. Model provider quota exceeded or unavailable."
-        });
-    }
+		res.status(500).json({
+			answer:
+				"Unable to process request. Model provider quota exceeded or unavailable."
+		});
+	}
 });
 
 const PORT = process.env.PORT || 3000;
