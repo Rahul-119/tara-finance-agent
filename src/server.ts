@@ -80,6 +80,23 @@ app.get("/health", async (req, res) => {
     });
 });
 
+import pool from "./db/connection.js";
+
+app.get("/db-health", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT NOW()");
+        res.json({
+            connected: true,
+            time: result.rows[0]
+        });
+    } catch (error) {
+        res.status(500).json({
+            connected: false,
+            error: String(error)
+        });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
