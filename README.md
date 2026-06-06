@@ -268,3 +268,76 @@ Logged information includes:
 * Natural language date filtering
 * Portfolio risk analytics
 * Generic analytics query tool
+
+## API
+
+### POST /ask
+
+Accepts a natural language finance question and returns a generated answer based on PostgreSQL-backed financial data.
+
+Request:
+
+```json
+{
+  "question": "What is my portfolio value?"
+}
+```
+
+Response:
+
+```json
+{
+  "answer": "Your total portfolio value is $119983.80."
+}
+```
+
+---
+
+## Observability
+
+The application records request execution information in `app.log`.
+
+Logged information includes:
+
+* Request ID
+* Question
+* Execution status
+* Latency
+* Error details (if applicable)
+
+Example success log:
+
+```json
+{
+  "requestId": "...",
+  "question": "What is my portfolio value?",
+  "status": "success",
+  "latencyMs": 312
+}
+```
+
+Example failure log:
+
+```json
+{
+  "requestId": "...",
+  "question": "What is my portfolio value?",
+  "status": "failure",
+  "error": "...",
+  "latencyMs": 145
+}
+```
+
+---
+
+## Deployment
+
+The application can be deployed to any Node.js hosting platform.
+
+Environment variables required:
+
+```env
+DATABASE_URL=<postgres_connection_string>
+GOOGLE_API_KEY=<gemini_api_key>
+```
+

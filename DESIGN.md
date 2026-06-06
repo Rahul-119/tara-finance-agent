@@ -289,19 +289,39 @@ Advantages:
 * The ingestion process assumes a clean database before loading a snapshot.
 
 ---
-## Observability
+### Observability
 
-Basic observability is implemented through structured request logging.
+To support debugging and operational visibility, the API records structured logs for every request.
 
-For every request the system records:
+Captured metadata includes:
 
-- Request ID
-- Question
-- Execution status
-- Latency
-- Error information
+* Request identifier
+* User question
+* Execution status
+* Response latency
+* Error information
 
-These logs assist with debugging and provide evidence of successful and failed executions.
+This enables tracing successful requests as well as diagnosing failures caused by database connectivity, tool execution issues, or model provider errors.
+
+---
+
+### Deployment Architecture
+
+```text
+Client
+   ↓
+POST /ask
+   ↓
+Express API
+   ↓
+Tara Agent (Gemini)
+   ↓
+Mastra Tools
+   ↓
+PostgreSQL (Supabase)
+```
+
+The deployed application exposes a single `/ask` endpoint and uses Supabase-hosted PostgreSQL for persistent storage.
 
 ---
 
