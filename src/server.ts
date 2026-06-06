@@ -73,6 +73,13 @@ app.post("/ask", async (req, res) => {
 	}
 });
 
+app.get("/health", async (req, res) => {
+    res.json({
+        databaseUrlExists: !!process.env.DATABASE_URL,
+        googleKeyExists: !!process.env.GOOGLE_API_KEY,
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
