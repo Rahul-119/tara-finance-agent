@@ -57,20 +57,19 @@ app.post("/ask", async (req, res) => {
 		});
 
 	} catch (error) {
-		console.error(error);
+		console.error("ASK ERROR:", error);
 
-		log({
-			requestId,
-			question,
-			status: "failure",
-			error: String(error),
-			latencyMs: Date.now() - start
-		});
+        log({
+            requestId,
+            question,
+            status: "failure",
+            error: String(error),
+            latencyMs: Date.now() - start
+        });
 
-		res.status(500).json({
-			answer:
-				"Unable to process request. Model provider quota exceeded or unavailable."
-		});
+        res.status(500).json({
+            answer: String(error)
+        });
 	}
 });
 
